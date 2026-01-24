@@ -1,0 +1,7 @@
+{
+  "setup-worktree": [
+    "flutter pub get",
+    "dart --version",
+    "flutter --version"
+  ]
+}
