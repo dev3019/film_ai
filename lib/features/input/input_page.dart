@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import 'widgets/age_selector.dart';
+import 'widgets/genre_dropdown.dart';
+import 'widgets/mood_text_field.dart';
 
 /// Task 1 scope: gradient background + header scaffold.
-///
-/// Task 2/3/4 will populate the form controls and frosted card contents.
-class InputPage extends StatelessWidget {
+/// Task 2: Form controls (mood, genre, age) integrated.
+/// Task 3/4 will add frosted card container and action buttons.
+class InputPage extends StatefulWidget {
   const InputPage({super.key});
+
+  @override
+  State<InputPage> createState() => _InputPageState();
+}
+
+class _InputPageState extends State<InputPage> {
+  // Form state - will be used in Task 4 for form submission
+  // ignore: unused_field
+  String _mood = '';
+  Genre? _selectedGenre;
+  AgeCategory? _selectedAge;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +55,38 @@ class InputPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: const Text(
-                        'Form components will be added in the next tasks.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Mood text field
+                          MoodTextField(
+                            onChanged: (value) => setState(() => _mood = value),
+                          ),
+                          const SizedBox(height: 20),
+                          // Genre dropdown
+                          GenreDropdown(
+                            initialValue: _selectedGenre,
+                            onChanged: (genre) =>
+                                setState(() => _selectedGenre = genre),
+                          ),
+                          const SizedBox(height: 20),
+                          // Age selector tiles
+                          AgeSelector(
+                            value: _selectedAge,
+                            onChanged: (age) =>
+                                setState(() => _selectedAge = age),
+                          ),
+                          const SizedBox(height: 24),
+                          // Placeholder for action buttons (Task 3)
+                          Text(
+                            'Action buttons will be added in Task 3.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.7),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
