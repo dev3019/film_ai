@@ -20,6 +20,7 @@ enum Genre {
 /// Features:
 /// - Styled to match theme with rounded corners and subtle borders
 /// - Type-safe genre selection via [Genre] enum
+/// - Light font weight for selected text
 class GenreDropdown extends StatefulWidget {
   const GenreDropdown({
     super.key,
@@ -62,6 +63,10 @@ class _GenreDropdownState extends State<GenreDropdown> {
           initialValue: _selectedGenre,
           hint: const Text('Select genre'),
           isExpanded: true,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w400, // Less bold for selected text
+                color: Colors.black87,
+              ),
           decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           ),

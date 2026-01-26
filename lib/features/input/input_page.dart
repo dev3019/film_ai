@@ -99,7 +99,7 @@ class _Header extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Icon(
-          Icons.auto_fix_high, // magic wand icon matching the design
+          Icons.movie_creation, // filled clapboard icon
           color: Colors.white,
           size: 28,
         ),

@@ -12,7 +12,7 @@ class FrostedCard extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.all(20),
     this.borderRadius = 24.0,
-    this.blurSigma = 16.0,
+    this.blurSigma = 12.0,
   });
 
   /// The content to display inside the card.
@@ -24,7 +24,7 @@ class FrostedCard extends StatelessWidget {
   /// Border radius of the card. Defaults to 24.
   final double borderRadius;
 
-  /// Blur intensity. Defaults to 16.
+  /// Blur intensity. Defaults to 12.
   final double blurSigma;
 
   @override
@@ -37,18 +37,18 @@ class FrostedCard extends StatelessWidget {
           width: double.infinity,
           padding: padding,
           decoration: BoxDecoration(
-            // Semi-transparent white for frosted effect
-            color: Colors.white.withValues(alpha: 0.85),
+            // High opacity white for clean, readable frosted effect
+            color: Colors.white.withValues(alpha: 0.92),
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.3),
+              color: Colors.white.withValues(alpha: 0.5),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 24,
-                offset: const Offset(0, 12),
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),

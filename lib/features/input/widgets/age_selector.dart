@@ -4,9 +4,9 @@ import '../../../core/theme/app_colors.dart';
 
 /// Age suitability categories for movie recommendations.
 enum AgeCategory {
-  kids('Kids', Icons.child_care),
+  kids('Kids', Icons.child_friendly),
   family('Family', Icons.family_restroom),
-  mature('Mature', Icons.no_adult_content);
+  mature('Mature', Icons.not_interested);
 
   const AgeCategory(this.label, this.icon);
 
@@ -21,8 +21,9 @@ enum AgeCategory {
 ///
 /// Features:
 /// - Single-select behavior
-/// - Visual selected state with border and checkmark badge
-/// - Icons and labels for each option
+/// - Gradient icon background matching app theme
+/// - Elevated selected state with gradient border
+/// - Compact square tiles
 class AgeSelector extends StatelessWidget {
   const AgeSelector({
     super.key,
@@ -72,98 +73,77 @@ class _AgeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color accentColor = AppColors.coral;
-
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? accentColor.withValues(alpha: 0.1)
-              : Colors.white.withValues(alpha: 0.85),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? accentColor : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
+          // Gradient border for selected state
+          gradient: isSelected ? AppColors.backgroundGradient : null,
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: accentColor.withValues(alpha: 0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: AppColors.purple.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : null,
         ),
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? accentColor
-                          : accentColor.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
+        child: Container(
+          margin: EdgeInsets.all(isSelected ? 2 : 0),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.white, // White container background
+            borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
+            border: isSelected
+                ? null
+                : Border.all(color: Colors.grey.shade300, width: 1),
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Icon with gradient background
+                    _GradientIconCircle(
+                      icon: category.icon,
+                      size: 48,
                     ),
-                    child: Icon(
-                      category.icon,
-                      color: isSelected ? Colors.white : accentColor,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _getEmoji(category),
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      const SizedBox(width: 2),
-                      Text(
-                        category.label,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w500,
-                          color: isSelected ? accentColor : Colors.black87,
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _getEmoji(category),
+                          style: const TextStyle(fontSize: 12),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (isSelected)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: accentColor,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                  child: const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 12,
-                  ),
+                        const SizedBox(width: 2),
+                        Text(
+                          category.label,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87, // Default font color always
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-          ],
+              if (isSelected)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: _GradientCheckBadge(),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -175,5 +155,54 @@ class _AgeTile extends StatelessWidget {
       AgeCategory.family => '👨‍👩‍👧',
       AgeCategory.mature => '🔞',
     };
+  }
+}
+
+/// A circular icon container with gradient background.
+class _GradientIconCircle extends StatelessWidget {
+  const _GradientIconCircle({
+    required this.icon,
+    required this.size,
+  });
+
+  final IconData icon;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: const BoxDecoration(
+        gradient: AppColors.backgroundGradient,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        icon,
+        color: Colors.white,
+        size: size * 0.5,
+      ),
+    );
+  }
+}
+
+/// A small checkmark badge with gradient background.
+class _GradientCheckBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+        gradient: AppColors.backgroundGradient,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 2),
+      ),
+      child: const Icon(
+        Icons.check,
+        color: Colors.white,
+        size: 12,
+      ),
+    );
   }
 }

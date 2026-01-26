@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 /// A text input field for capturing the user's mood description.
 ///
 /// Features:
-/// - Max length of 75 characters with visible counter
-/// - Production-ready UX with clear label and placeholder
-/// - Focus state styling via theme
+/// - Max length of 75 characters with static counter display
+/// - Label positioned above the field
+/// - Placeholder text inside the field
 class MoodTextField extends StatefulWidget {
   const MoodTextField({
     super.key,
@@ -60,7 +60,7 @@ class _MoodTextFieldState extends State<MoodTextField> {
           textInputAction: TextInputAction.done,
           decoration: const InputDecoration(
             hintText: 'I want something exciting and fun...',
-            counterText: '', // Hide default counter, we use custom one below
+            counterText: '', // Hide default counter
           ),
           onChanged: widget.onChanged,
         ),
