@@ -29,13 +29,14 @@ class FrostedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double innerRadius = (borderRadius - 2).clamp(0.0, borderRadius);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
         child: Container(
           width: double.infinity,
-          padding: padding,
           decoration: BoxDecoration(
             // High opacity white for clean, readable frosted effect
             color: Colors.white.withValues(alpha: 0.92),
@@ -52,7 +53,38 @@ class FrostedCard extends StatelessWidget {
               ),
             ],
           ),
-          child: child,
+          child: Stack(
+            children: [
+              // Subtle inner "smoky" edge tint to match the mock.
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(innerRadius),
+                        border: Border.all(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          width: 1,
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[
+                            Colors.black.withValues(alpha: 0.045),
+                            Colors.transparent,
+                            Colors.black.withValues(alpha: 0.02),
+                          ],
+                          stops: const <double>[0.0, 0.55, 1.0],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(padding: padding, child: child),
+            ],
+          ),
         ),
       ),
     );
