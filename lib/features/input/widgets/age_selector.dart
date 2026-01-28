@@ -4,7 +4,7 @@ import '../../../core/theme/app_colors.dart';
 
 /// Age suitability categories for movie recommendations.
 enum AgeCategory {
-  kids('Kids', Icons.child_friendly),
+  kids('Kids', Icons.child_care),
   family('Family', Icons.family_restroom),
   mature('Mature', Icons.not_interested);
 
@@ -110,16 +110,7 @@ class _AgeTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Icon with gradient background
-                    _GradientIconCircle(
-                      size: 48,
-                      icon: category == AgeCategory.kids ? null : category.icon,
-                      child: category == AgeCategory.kids
-                          ? Text(
-                              _getEmoji(category),
-                              style: const TextStyle(fontSize: 24, height: 1),
-                            )
-                          : null,
-                    ),
+                    _GradientIconCircle(size: 48, icon: category.icon),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -167,16 +158,13 @@ class _AgeTile extends StatelessWidget {
 
 /// A circular icon container with gradient background.
 class _GradientIconCircle extends StatelessWidget {
-  const _GradientIconCircle({required this.size, this.icon, this.child});
+  const _GradientIconCircle({required this.icon, required this.size});
 
+  final IconData icon;
   final double size;
-  final IconData? icon;
-  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    assert((icon == null) != (child == null), 'Provide either icon or child');
-
     return Container(
       width: size,
       height: size,
@@ -184,9 +172,7 @@ class _GradientIconCircle extends StatelessWidget {
         gradient: AppColors.backgroundGradient,
         shape: BoxShape.circle,
       ),
-      child: Center(
-        child: child ?? Icon(icon, color: Colors.white, size: size * 0.5),
-      ),
+      child: Icon(icon, color: Colors.white, size: size * 0.5),
     );
   }
 }

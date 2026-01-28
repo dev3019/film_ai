@@ -25,7 +25,7 @@ class ActionButtons extends StatelessWidget {
       children: [
         // Primary button - Get Recommendations
         Expanded(
-          child: _GradientActionButton(
+          child: _GradientFilledButton(
             label: 'Get Recommendations',
             icon: Icons.auto_fix_high,
             onPressed: onGetRecommendations,
@@ -34,7 +34,7 @@ class ActionButtons extends StatelessWidget {
         const SizedBox(width: 12),
         // Secondary button - Similar to Last Time
         Expanded(
-          child: _GradientActionButton(
+          child: _GradientOutlinedButton(
             label: 'Similar to Last Time',
             icon: Icons.history,
             onPressed: onSimilarToLastTime,
@@ -45,8 +45,8 @@ class ActionButtons extends StatelessWidget {
   }
 }
 
-class _GradientActionButton extends StatelessWidget {
-  const _GradientActionButton({
+class _GradientFilledButton extends StatelessWidget {
+  const _GradientFilledButton({
     required this.label,
     required this.icon,
     this.onPressed,
@@ -126,6 +126,96 @@ class _GradientActionButton extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GradientOutlinedButton extends StatelessWidget {
+  const _GradientOutlinedButton({
+    required this.label,
+    required this.icon,
+    this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    const double radius = 28;
+    const double borderWidth = 2;
+    final bool enabled = onPressed != null;
+
+    final LinearGradient gradient = enabled
+        ? AppColors.backgroundGradient
+        : LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[
+              AppColors.coral.withValues(alpha: 0.35),
+              AppColors.purple.withValues(alpha: 0.35),
+            ],
+          );
+
+    final Color fallbackForeground = enabled
+        ? AppColors.purple
+        : AppColors.purple.withValues(alpha: 0.55);
+
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: label,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(borderWidth),
+          child: Material(
+            color: Colors.white.withValues(alpha: 0.92),
+            borderRadius: BorderRadius.circular(radius - borderWidth),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onPressed,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                  horizontal: 16,
+                ),
+                child: ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (Rect bounds) =>
+                      gradient.createShader(bounds),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 18,
+                        color: enabled ? Colors.white : fallbackForeground,
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          label,
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: enabled ? Colors.white : fallbackForeground,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
