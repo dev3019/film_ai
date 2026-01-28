@@ -4,7 +4,7 @@ import '../../../core/theme/app_colors.dart';
 
 /// Age suitability categories for movie recommendations.
 enum AgeCategory {
-  kids('Kids', Icons.child_friendly),
+  kids('Kids', Icons.child_care), // Baby face icon
   family('Family', Icons.family_restroom),
   mature('Mature', Icons.not_interested);
 
@@ -25,11 +25,7 @@ enum AgeCategory {
 /// - Elevated selected state with gradient border
 /// - Compact square tiles
 class AgeSelector extends StatelessWidget {
-  const AgeSelector({
-    super.key,
-    this.value,
-    this.onChanged,
-  });
+  const AgeSelector({super.key, this.value, this.onChanged});
 
   /// Currently selected age category.
   final AgeCategory? value;
@@ -78,6 +74,7 @@ class _AgeTile extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
+        clipBehavior: Clip.none, // Allow badge to overflow
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           // Gradient border for selected state
@@ -92,27 +89,25 @@ class _AgeTile extends StatelessWidget {
                 ]
               : null,
         ),
-        child: Container(
-          margin: EdgeInsets.all(isSelected ? 2 : 0),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white, // White container background
-            borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
-            border: isSelected
-                ? null
-                : Border.all(color: Colors.grey.shade300, width: 1),
-          ),
-          child: Stack(
-            children: [
-              Center(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              margin: EdgeInsets.all(isSelected ? 2 : 0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.white, // White container background
+                borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
+                border: isSelected
+                    ? null
+                    : Border.all(color: Colors.grey.shade300, width: 1),
+              ),
+              child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Icon with gradient background
-                    _GradientIconCircle(
-                      icon: category.icon,
-                      size: 48,
-                    ),
+                    _GradientIconCircle(icon: category.icon, size: 48),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,14 +131,11 @@ class _AgeTile extends StatelessWidget {
                   ],
                 ),
               ),
-              if (isSelected)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: _GradientCheckBadge(),
-                ),
-            ],
-          ),
+            ),
+            // Checkmark badge at top-right corner of the tile
+            if (isSelected)
+              Positioned(top: -4, right: -4, child: _GradientCheckBadge()),
+          ],
         ),
       ),
     );
@@ -160,10 +152,7 @@ class _AgeTile extends StatelessWidget {
 
 /// A circular icon container with gradient background.
 class _GradientIconCircle extends StatelessWidget {
-  const _GradientIconCircle({
-    required this.icon,
-    required this.size,
-  });
+  const _GradientIconCircle({required this.icon, required this.size});
 
   final IconData icon;
   final double size;
@@ -177,11 +166,7 @@ class _GradientIconCircle extends StatelessWidget {
         gradient: AppColors.backgroundGradient,
         shape: BoxShape.circle,
       ),
-      child: Icon(
-        icon,
-        color: Colors.white,
-        size: size * 0.5,
-      ),
+      child: Icon(icon, color: Colors.white, size: size * 0.5),
     );
   }
 }
@@ -198,11 +183,7 @@ class _GradientCheckBadge extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white, width: 2),
       ),
-      child: const Icon(
-        Icons.check,
-        color: Colors.white,
-        size: 12,
-      ),
+      child: const Icon(Icons.check, color: Colors.white, size: 12),
     );
   }
 }
