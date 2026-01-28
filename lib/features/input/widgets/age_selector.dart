@@ -71,7 +71,10 @@ class _AgeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     const double selectedInset = 2;
     const double badgeSize = 20;
-    final double badgeOffset = -(badgeSize / 2 - selectedInset);
+    // Position the badge so it sits on the OUTER border corner:
+    // - half outside / half inside (=-badgeSize/2)
+    // - plus the selected tile inset so it reaches the gradient border.
+    final double badgeOffset = -(badgeSize / 2 + selectedInset);
 
     return GestureDetector(
       onTap: onTap,
