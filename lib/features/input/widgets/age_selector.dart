@@ -4,7 +4,7 @@ import '../../../core/theme/app_colors.dart';
 
 /// Age suitability categories for movie recommendations.
 enum AgeCategory {
-  kids('Kids', Icons.child_care),
+  kids('Kids', Icons.child_care), // Baby face icon
   family('Family', Icons.family_restroom),
   mature('Mature', Icons.not_interested);
 
@@ -78,6 +78,7 @@ class _AgeTile extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
+        clipBehavior: Clip.none, // Allow badge to overflow
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           // Gradient border for selected state
@@ -92,25 +93,25 @@ class _AgeTile extends StatelessWidget {
                 ]
               : null,
         ),
-        child: Container(
-          margin: EdgeInsets.all(isSelected ? 2 : 0),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: Colors.white, // White container background
-            borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
-            border: isSelected
-                ? null
-                : Border.all(color: Colors.grey.shade300, width: 1),
-          ),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Center(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              margin: EdgeInsets.all(isSelected ? 2 : 0),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.white, // White container background
+                borderRadius: BorderRadius.circular(isSelected ? 14 : 16),
+                border: isSelected
+                    ? null
+                    : Border.all(color: Colors.grey.shade300, width: 1),
+              ),
+              child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Icon with gradient background
-                    _GradientIconCircle(size: 48, icon: category.icon),
+                    _GradientIconCircle(icon: category.icon, size: 48),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -134,14 +135,11 @@ class _AgeTile extends StatelessWidget {
                   ],
                 ),
               ),
-              if (isSelected)
-                Positioned(
-                  top: badgeOffset,
-                  right: badgeOffset,
-                  child: const _GradientCheckBadge(),
-                ),
-            ],
-          ),
+            ),
+            // Checkmark badge at top-right corner of the tile
+            if (isSelected)
+              Positioned(top: -4, right: -4, child: _GradientCheckBadge()),
+          ],
         ),
       ),
     );
