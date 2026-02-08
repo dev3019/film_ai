@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/frosted_card.dart';
+import '../results/models/movie_recommendation.dart';
 import 'widgets/action_buttons.dart';
 import 'widgets/age_selector.dart';
 import 'widgets/genre_dropdown.dart';
@@ -27,8 +28,16 @@ class _InputPageState extends State<InputPage> {
   AgeCategory? _selectedAge;
 
   void _handleGetRecommendations() {
-    // TODO: Wire to orchestrator in future phase
-    debugPrint('Get Recommendations: mood=$_mood, genre=$_selectedGenre, age=$_selectedAge');
+    // TODO: Replace dummy data with orchestrator results in a future phase.
+    debugPrint(
+      'Get Recommendations: mood=$_mood, '
+      'genre=$_selectedGenre, age=$_selectedAge',
+    );
+    Navigator.pushNamed(
+      context,
+      '/results',
+      arguments: MovieRecommendation.dummyList,
+    );
   }
 
   void _handleSimilarToLastTime() {
