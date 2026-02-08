@@ -10,10 +10,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:film_ai/main.dart';
 
 void main() {
-  testWidgets('App shows Input page header', (WidgetTester tester) async {
+  testWidgets('Navigates to Results page from Input page',
+      (WidgetTester tester) async {
     await tester.pumpWidget(const FilmAiApp());
     await tester.pumpAndSettle();
 
     expect(find.text('Film AI'), findsOneWidget);
+
+    await tester.tap(find.text('Get Recommendations'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Your Picks'), findsOneWidget);
   });
 }

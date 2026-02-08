@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../results/models/movie_recommendation.dart';
+import '../results/results_page.dart';
 import '../../shared/widgets/frosted_card.dart';
 import 'widgets/action_buttons.dart';
 import 'widgets/age_selector.dart';
@@ -29,6 +31,43 @@ class _InputPageState extends State<InputPage> {
   void _handleGetRecommendations() {
     // TODO: Wire to orchestrator in future phase
     debugPrint('Get Recommendations: mood=$_mood, genre=$_selectedGenre, age=$_selectedAge');
+    final recommendations = <MovieRecommendation>[
+      const MovieRecommendation(
+        title: 'The Grand Skyline',
+        posterUrl: 'https://example.com/posters/grand-skyline.jpg',
+        rating: 8.3,
+        genres: ['Drama', 'Romance'],
+        ageRating: 'PG-13',
+        summary:
+            'A quiet architect finds connection and courage while restoring a landmark.',
+        tmdbUrl: 'https://www.themoviedb.org/movie/10001',
+      ),
+      const MovieRecommendation(
+        title: 'Starlight Circuit',
+        posterUrl: 'https://example.com/posters/starlight-circuit.jpg',
+        rating: 7.9,
+        genres: ['Sci-Fi', 'Adventure'],
+        ageRating: 'PG',
+        summary:
+            'A rookie pilot races to save her fleet from a mysterious cosmic threat.',
+        tmdbUrl: 'https://www.themoviedb.org/movie/10002',
+      ),
+      const MovieRecommendation(
+        title: 'Midnight Canvas',
+        posterUrl: 'https://example.com/posters/midnight-canvas.jpg',
+        rating: 8.1,
+        genres: ['Mystery', 'Thriller'],
+        ageRating: 'R',
+        summary:
+            'A detective unravels the secrets hidden within a series of surreal paintings.',
+        tmdbUrl: 'https://www.themoviedb.org/movie/10003',
+      ),
+    ];
+
+    Navigator.of(context).pushNamed(
+      ResultsPage.routeName,
+      arguments: recommendations,
+    );
   }
 
   void _handleSimilarToLastTime() {
