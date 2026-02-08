@@ -25,6 +25,7 @@ This document defines the project-wide rules and constraints that must be follow
 - **Branching:** Never work directly on `main`. Always create a new feature branch from `main` before making any changes. 
 - **Source of Truth:** Treat `main` as the absolute source of truth. Before starting a task, ensure the local `main` is synced with remote and branch off it.
 - **Syncing:** Whenever a new chat opens or multiple models are invoked, your first action must be to verify the current branch and ensure the codebase state matches the latest accepted changes from `main` or the active feature branch.
+- **Authentication** Always use ssh
 
 ## Engineering Standards
 - **Style:** No sugar-coating. Be direct and concise.
