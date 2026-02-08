@@ -1,105 +1,98 @@
-# Tasks (Phase 3) — UI: Input Page
+# Tasks (Phase 3) — UI: Results Page
 
 ## Scope
-- Build the **Input Page UI** matching the provided design direction (gradient + frosted card) and **remove the phone/mock device background**.
-- No backend, orchestration, API calls, persistence, or navigation beyond showing the screen (unless explicitly requested later).
+- Build the **Results Page UI** matching the provided design direction (gradient + frosted card + carousel).
+- No backend, orchestration, AI, or TMDB integration yet (use dummy data for visual development).
+- Navigation is allowed only between the Input page and Results page.
 
-## Target Folder Structure
+## Target Folder Additions
 ```text
 lib/
-├── main.dart                    # App entry, theme setup, routing
-├── core/
-│   └── theme/
-│       ├── app_colors.dart      # Color constants (gradients, accents)
-│       └── app_theme.dart       # ThemeData configuration
 ├── features/
-│   └── input/
-│       ├── input_page.dart      # Main input page widget
+│   └── results/
+│       ├── results_page.dart           # Main results page widget
+│       ├── models/
+│       │   └── movie_recommendation.dart  # Data model
 │       └── widgets/
-│           ├── mood_text_field.dart      # Text input with char counter
-│           ├── genre_dropdown.dart       # Genre selector dropdown
-│           ├── age_selector.dart         # Age suitability card selector
-│           └── action_buttons.dart       # Primary + secondary actions
-└── shared/
-    └── widgets/
-        └── frosted_card.dart    # Reusable frosted glass card container
+│           ├── results_header.dart      # Back button + "Your Picks"
+│           ├── movie_poster.dart        # Network poster image
+│           ├── metadata_row.dart        # Rating + genre chips + age chip
+│           ├── tmdb_link_button.dart    # "Open in TMDB" button
+│           ├── movie_card.dart          # Composite frosted card
+│           ├── movie_carousel.dart      # Horizontal PageView
+│           └── page_indicator.dart      # Dot indicators
+└── (existing shared/widgets/frosted_card.dart reused)
 ```
 
-## Task 1 — Setup Base (Theme + Background + Header)
-**Goal:** Establish the design system and scaffold-level UI (gradient background and app header).
+## Task 1 — Data Model + Navigation + Page Scaffold
+**Goal:** Establish navigation and the Results page container.
 
 ### Work items
-- Create `lib/core/theme/app_colors.dart`
-  - Define gradient colors:
-    - Coral: `#FF6B6B`
-    - Purple: `#6C5CE7`
-  - Define accent/neutral colors used by controls (borders, text, button fills).
-- Create `lib/core/theme/app_theme.dart`
-  - `ThemeData` for typography, button styles, input decoration defaults, radii.
-  - Keep it minimal and production-quality (readable contrast, consistent spacing).
-- Implement gradient background scaffold (coral → purple) on the Input page container.
-  - Ensure **no phone/device mock background** is used.
-- Build the header section:
-  - Movie clapboard icon + “Film AI” title
-  - Spacing aligned to the mock direction (centered header above the frosted card).
+- Create `lib/features/results/models/movie_recommendation.dart`
+  - Fields: title, posterUrl, rating, genres (List), ageRating, summary, tmdbUrl.
+- Add named-route navigation in `lib/main.dart`
+  - InputPage -> ResultsPage and back.
+- Create `lib/features/results/results_page.dart`
+  - Scaffold with gradient background (reuse `AppColors.backgroundGradient`)
+  - Accepts a `List<MovieRecommendation>` parameter.
+- Wire the "Get Recommendations" handler in `InputPage`
+  - Navigate to ResultsPage with dummy data.
 
 ### Acceptance criteria
-- App launches to a full-screen gradient background (coral → purple).
-- Header displays clapboard icon and “Film AI” consistently across device sizes.
-- Theme is applied globally via `ThemeData` (no ad-hoc styling for everything).
+- App can navigate from Input page to Results page and back without errors.
+- Results page renders a gradient background and loads dummy data.
 
-## Task 2 — Build Input Components (Mood + Genre + Age)
-**Goal:** Build the core form controls as reusable widgets.
+## Task 2 — Individual Movie Card Sub-widgets
+**Goal:** Build reusable subcomponents for the movie card.
 
 ### Work items
-- `lib/features/input/widgets/mood_text_field.dart`
-  - Text input with placeholder
-  - Max length 75 with visible “75 chars max” / counter behavior
-  - Production-ready UX: clear label, focus state, error-ready styling
-- `lib/features/input/widgets/genre_dropdown.dart`
-  - Dropdown with genre options (e.g., Action, Comedy, Drama, Sci‑Fi, Thriller, Romance)
-  - Styled to match theme (rounded corners, subtle borders)
-- `lib/features/input/widgets/age_selector.dart`
-  - Three selectable cards/tiles: Kids / Family / Mature
-  - Each tile has an icon + label and a clear selected state (outline/glow/check badge)
-  - Single-select behavior
+- `lib/features/results/widgets/results_header.dart`
+  - Back chevron + "Your Picks" title, white text, `Navigator.pop`.
+- `lib/features/results/widgets/movie_poster.dart`
+  - `Image.network` with rounded corners, loading placeholder, error fallback.
+- `lib/features/results/widgets/metadata_row.dart`
+  - Star icon + rating number
+  - Genre chip(s) as small bordered tags
+  - Age rating chip.
+- `lib/features/results/widgets/tmdb_link_button.dart`
+  - "Open in TMDB" button with external-link icon
+  - Launches URL using `url_launcher`.
 
 ### Acceptance criteria
-- Mood field enforces 75 chars and displays the max/counter clearly.
-- Genre dropdown renders and selects correctly.
-- Age tiles are selectable (exactly one selected) and visually match the design direction.
+- Each widget is reusable and styled consistently with existing theme.
+- Poster and button have safe loading/error states.
 
-## Task 3 — Final Touch-ups (Frosted Card + Action Buttons)
-**Goal:** Build shared “frosted glass” container and the two action buttons.
+## Task 3 — Movie Card Composite + Carousel + Dots
+**Goal:** Assemble the card and enable horizontal paging.
 
 ### Work items
-- `lib/shared/widgets/frosted_card.dart`
-  - Reusable frosted container using blur + opacity + border + shadow
-  - Parameterized padding/radius so other screens can reuse later
-- `lib/features/input/widgets/action_buttons.dart`
-  - Primary button: “Get Recommendations”
-  - Secondary button: “Similar to Last Time”
-  - Match the design: primary looks emphasized; secondary looks outlined/ghost
+- `lib/features/results/widgets/movie_card.dart`
+  - Compose poster + title + metadata row + summary text + TMDB button inside `FrostedCard`.
+- `lib/features/results/widgets/movie_carousel.dart`
+  - `PageView.builder` with viewport fraction (approx 0.85) and peeked neighbors.
+  - Exposes current-page callback for indicator sync.
+- `lib/features/results/widgets/page_indicator.dart`
+  - Row of dots with active state.
 
 ### Acceptance criteria
-- Frosted card looks “glass-like” over the gradient background with good readability.
-- Buttons have consistent sizing, spacing, and theming.
+- Carousel scrolls horizontally with smooth paging.
+- Dots stay in sync with the visible card.
 
-## Task 4 — Assemble Page + Wire Entry Point
-**Goal:** Compose the full page layout and make it the app’s initial route.
+## Task 4 — Assemble Page + "New Search" Button + Polish
+**Goal:** Finish the full layout and match the reference image.
 
 ### Work items
-- `lib/features/input/input_page.dart`
-  - Compose header + frosted card + mood field + genre + age tiles + buttons
-  - Ensure responsive layout (works on small and large phones)
-- Update `lib/main.dart`
-  - Replace counter app
-  - Apply `AppTheme` and set home to `InputPage`
+- Add "New Search" button at the bottom of ResultsPage
+  - Styled like outlined action button from Input page.
+  - Navigates back to InputPage.
+- Compose full ResultsPage layout: header + carousel + dots + new-search button.
+- Responsive layout (SafeArea, padding, ConstrainedBox).
 
 ### Acceptance criteria
-- Final Input page matches the intended layout from the reference image:
-  - Gradient background
-  - Centered header
-  - Frosted card containing form controls + actions
-- No runtime errors; hot reload works; UI is stable across common device sizes.
+- Final Results page matches the intended layout.
+- No runtime errors; UI stable across common device sizes.
 
+## Existing assets to reuse
+- `lib/shared/widgets/frosted_card.dart` — frosted glass container
+- `lib/core/theme/app_colors.dart` — gradient colors, text colors
+- `lib/core/theme/app_theme.dart` — ThemeData, button styles, typography
