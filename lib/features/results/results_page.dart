@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import 'models/movie_recommendation.dart';
+import 'widgets/results_header.dart';
 
 /// Main results page displaying movie recommendations.
 ///
@@ -27,29 +28,7 @@ class ResultsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Minimal back button + title — full header widget in Task 2.
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.chevron_left, color: Colors.white),
-                      iconSize: 28,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Your Picks',
-                      style: textTheme.headlineLarge?.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const ResultsHeader(),
               // Placeholder content proving the page loads dummy data.
               Expanded(
                 child: Center(
