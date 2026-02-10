@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'core/theme/app_theme.dart';
@@ -9,6 +10,20 @@ void main() {
   runApp(const FilmAiApp());
 }
 
+/// Custom scroll behavior that enables mouse and trackpad drag on web.
+///
+/// Flutter web excludes [PointerDeviceKind.mouse] from drag devices by
+/// default, which prevents [PageView] and other scrollables from responding
+/// to mouse drag. This override adds mouse and trackpad support globally.
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      };
+}
+
 class FilmAiApp extends StatelessWidget {
   const FilmAiApp({super.key});
 
@@ -18,6 +33,7 @@ class FilmAiApp extends StatelessWidget {
       title: 'Film AI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
+      scrollBehavior: AppScrollBehavior(),
       initialRoute: '/',
       onGenerateRoute: _onGenerateRoute,
     );

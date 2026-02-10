@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/gradient_outlined_button.dart';
 import 'models/movie_recommendation.dart';
 import 'widgets/movie_carousel.dart';
 import 'widgets/page_indicator.dart';
 import 'widgets/results_header.dart';
 
+/// Maximum content width for the results page on wide screens.
+const double _kMaxContentWidth = 600;
+
 /// Main results page displaying movie recommendations in a carousel.
 ///
 /// Accepts a list of [MovieRecommendation] items and renders them as
-/// horizontally paging cards with a synced dot indicator.
+/// horizontally paging cards with a synced dot indicator. Includes a
+/// "New Search" button to navigate back to the input page.
 class ResultsPage extends StatefulWidget {
   const ResultsPage({super.key, required this.recommendations});
 
@@ -48,29 +53,47 @@ class _ResultsPageState extends State<ResultsPage> {
           gradient: AppColors.backgroundGradient,
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              const ResultsHeader(),
-              const SizedBox(height: 8),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: _kMaxContentWidth),
+              child: Column(
+                children: [
+                  const ResultsHeader(),
+                  const SizedBox(height: 8),
 
-              // Movie card carousel
-              Expanded(
-                child: MovieCarousel(
-                  recommendations: widget.recommendations,
-                  controller: _pageController,
-                  onPageChanged: _onPageChanged,
-                ),
-              ),
+                  // Movie card carousel
+                  Expanded(
+                    child: MovieCarousel(
+                      recommendations: widget.recommendations,
+                      controller: _pageController,
+                      onPageChanged: _onPageChanged,
+                    ),
+                  ),
 
-              // Dot indicators
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 24),
-                child: PageIndicator(
-                  count: widget.recommendations.length,
-                  currentIndex: _currentPage,
-                ),
+                  // Dot indicators
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 12),
+                    child: PageIndicator(
+                      count: widget.recommendations.length,
+                      currentIndex: _currentPage,
+                    ),
+                  ),
+
+                  // New Search button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 12,
+                    ),
+                    child: GradientOutlinedButton(
+                      label: 'New Search',
+                      icon: Icons.search,
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
