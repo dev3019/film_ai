@@ -14,12 +14,9 @@ An AI-powered movie recommendation app built with Flutter. Describe your mood, p
 
 ## Features
 
-- **Mood input** -- Free-form text field (75 chars max) to describe what you're in the mood for
-- **Genre selector** -- Dropdown with options like Action & Adventure, Comedy, Drama, Sci-Fi, Thriller, and Romance
-- **Age suitability** -- Single-select tiles for Kids, Family, or Mature audiences
-- **Movie carousel** -- Swipeable cards displaying poster, title, rating, genre chips, age rating, and plot summary
-- **TMDB links** -- Each recommendation card includes an "Open in TMDB" button
-- **Similar to Last Time** -- Placeholder for a future feature that recalls previous preferences from local history
+- **Personalized recommendations** -- Get movie suggestions tailored to your mood, preferred genre, and age suitability, presented in a swipeable carousel with poster, rating, genre chips, and plot summary
+- **TMDB integration** -- Each recommendation includes a direct link to its TMDB page
+- **Similar to Last Time** -- Re-fetch recommendations based on your previous preferences using local history (planned)
 
 ## Tech Stack
 
