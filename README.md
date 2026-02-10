@@ -1,16 +1,35 @@
-# film_ai
+# Film AI
 
-A new Flutter project.
+Film AI is a Flutter app concept for mood-based movie discovery. It focuses on a polished mobile user interface where users describe their mood, choose genre and audience preferences, and browse curated movie cards.
 
-## Getting Started
+## Project Scope
 
-This project is a starting point for a Flutter application.
+This repository currently contains the UI/UX implementation only.
 
-A few resources to get you started if this is your first Flutter project:
+- No backend service is included.
+- No database or server-side recommendation logic is included.
+- Data flow shown in the app is frontend-focused for presentation and interaction.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Mood input field with character guidance.
+- Genre selector and audience preference cards (Kids, Family, Mature).
+- Recommendation call-to-action and "Similar to Last Time" UI flow.
+- Results carousel with movie card details and TMDB action button.
+
+## Run Locally
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Screenshots
+
+### Input Page
+
+![Input Page](input_page.png)
+
+### Results Page
+
+![Results Page](results_page.png)
