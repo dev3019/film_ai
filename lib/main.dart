@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import 'core/theme/app_theme.dart';
 import 'features/input/input_page.dart';
@@ -18,6 +19,7 @@ class FilmAiApp extends StatelessWidget {
       title: 'Film AI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
+      scrollBehavior: const _AppScrollBehavior(),
       initialRoute: '/',
       onGenerateRoute: _onGenerateRoute,
     );
@@ -42,4 +44,14 @@ class FilmAiApp extends StatelessWidget {
         return null;
     }
   }
+}
+
+class _AppScrollBehavior extends MaterialScrollBehavior {
+  const _AppScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    ...super.dragDevices,
+    PointerDeviceKind.mouse,
+  };
 }
